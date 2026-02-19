@@ -65,5 +65,19 @@ services:
       JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
     restart: unless-stopped
 
+  dashboard:
+    build:
+      context: .
+      dockerfile: services/dashboard/Dockerfile
+      args:
+        NEXT_PUBLIC_INGESTION_URL: http://localhost:3001
+        NEXT_PUBLIC_TRANSFORMATION_URL: http://localhost:3002
+        NEXT_PUBLIC_REPORTING_URL: http://localhost:3003
+    ports:
+      - '3000:3000'
+    depends_on:
+      - reporting
+    restart: unless-stopped
+
 volumes:
   pgdata:

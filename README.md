@@ -10,6 +10,14 @@ A system of **3 interconnected microservices** implementing a simplified data in
 ## Architecture
 
 ```
+                        ┌──────────────────┐
+                        │   Dashboard      │
+                        │   (Next.js)      │
+                        │   :3000          │
+                        └──────┬───────────┘
+                               │ REST
+       ┌───────────────────────┼───────────────────────┐
+       ▼                       ▼                       ▼
 ┌─────────────┐     ┌──────────────────┐     ┌─────────────────┐
 │  Ingestion   │────▶│  Transformation  │────▶│   Reporting     │
 │  Service     │     │  Service         │     │   Service       │
@@ -51,6 +59,7 @@ A system of **3 interconnected microservices** implementing a simplified data in
 | Testing          | Vitest 2 + Supertest    | Fast TS-native test runner                            |
 | Caching          | node-cache              | Zero-infra in-memory cache (60s TTL)                  |
 | Containerisation | Docker + Docker Compose | One-command startup                                   |
+| Dashboard        | Next.js 14 + Recharts   | App Router, server components, interactive charts     |
 | Monorepo         | npm workspaces          | Shared code without extra tooling                     |
 
 ---
@@ -74,6 +83,7 @@ docker-compose up --build
 
 Services will be available at:
 
+- **Dashboard: http://localhost:3000** (login: admin / password)
 - Ingestion: http://localhost:3001
 - Transformation: http://localhost:3002
 - Reporting: http://localhost:3003
@@ -299,16 +309,34 @@ curl -s http://localhost:3003/api/reports/health
 │   │       ├── services/transformService.ts
 │   │       └── __tests__/
 │   │
-│   └── reporting/                  # Port 3003
-│       ├── prisma/schema.prisma
+│   ├── reporting/                  # Port 3003
+│   │   ├── prisma/schema.prisma
+│   │   ├── Dockerfile
+│   │   └── src/
+│   │       ├── routes/reports.ts
+│   │       ├── services/reportService.ts
+│   │       ├── services/cache.ts
+│   │       ├── middleware/auth.ts
+│   │       ├── routes/auth.ts
+│   │       └── __tests__/
+│   │
+│   └── dashboard/                  # Port 3000 (Next.js)
 │       ├── Dockerfile
+│       ├── next.config.js
 │       └── src/
-│           ├── routes/reports.ts
-│           ├── services/reportService.ts
-│           ├── services/cache.ts
-│           ├── middleware/auth.ts
-│           ├── routes/auth.ts
-│           └── __tests__/
+│           ├── app/
+│           │   ├── layout.tsx
+│           │   ├── page.tsx          # → /login redirect
+│           │   ├── login/page.tsx    # JWT login
+│           │   └── dashboard/
+│           │       ├── layout.tsx    # Sidebar nav
+│           │       ├── page.tsx      # Overview + charts
+│           │       ├── products/     # Product breakdown
+│           │       ├── ingest/       # Data ingestion form
+│           │       └── health/       # Service health
+│           └── lib/
+│               ├── api.ts            # API client
+│               └── types.ts          # Response types
 │
 └── .github/workflows/ci.yml       # CI pipeline (lint → build → test)
 ```
@@ -319,6 +347,7 @@ curl -s http://localhost:3003/api/reports/health
 
 | Feature                | Details                                                                        |
 | ---------------------- | ------------------------------------------------------------------------------ |
+| **Next.js Dashboard**  | Full-featured React UI: summary charts, product breakdown, data ingestion, health monitor |
 | **JWT Authentication** | Bearer tokens on Reporting endpoints; `/api/auth/login` for token issuance     |
 | **CI Pipeline**        | GitHub Actions: install → build → lint → test on every push/PR                 |
 | **Graceful Shutdown**  | All services handle `SIGTERM`/`SIGINT` for clean Docker container stops        |
