@@ -30,6 +30,7 @@ interface DailyAggregateRow {
 }
 
 interface TransformationPrismaClient {
+  $disconnect(): Promise<void>;
   batch: {
     findUnique(args: { where: { id: string } }): Promise<BatchRow | null>;
     update(args: {

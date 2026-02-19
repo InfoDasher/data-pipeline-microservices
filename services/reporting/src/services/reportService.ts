@@ -63,6 +63,7 @@ interface ProductBreakdownResponse {
 }
 
 interface ReportingPrismaClient {
+  $disconnect(): Promise<void>;
   dailyAggregate: {
     findMany(args: {
       where: Record<string, unknown>;

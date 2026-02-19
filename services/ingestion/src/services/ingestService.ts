@@ -12,6 +12,7 @@ interface BatchRow {
 }
 
 interface IngestionPrismaClient {
+  $disconnect(): Promise<void>;
   batch: {
     create(args: { data: { status: string; recordCount: number } }): Promise<{ id: string }>;
     update(args: {

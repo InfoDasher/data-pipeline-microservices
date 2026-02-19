@@ -1,4 +1,5 @@
 import { app } from './app';
+import { prisma } from './services/reportService';
 
 const PORT = process.env.REPORTING_PORT || 3003;
 
@@ -8,7 +9,11 @@ const server = app.listen(PORT, () => {
 
 const shutdown = () => {
   console.log('Shutting down reporting service...');
-  server.close(() => process.exit(0));
+  server.close(async () => {
+    await prisma.$disconnect();
+    process.exit(0);
+  });
+  setTimeout(() => process.exit(1), 10_000);
 };
 
 process.on('SIGTERM', shutdown);
