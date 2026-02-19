@@ -1,11 +1,13 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { fetchProducts } from '@/lib/api';
 import { Product } from '@/lib/types';
 
 export default function ProductsPage() {
+  const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
@@ -26,12 +28,17 @@ export default function ProductsPage() {
       } else {
         setError('Failed to load products');
       }
-    } catch {
+    } catch (err) {
+      if (err instanceof Error && err.message === 'SESSION_EXPIRED') {
+        setError('Session expired. Please log in again.');
+        router.replace('/login');
+        return;
+      }
       setError('Could not reach reporting service');
     } finally {
       setLoading(false);
     }
-  }, [from, to]);
+  }, [from, to, router]);
 
   useEffect(() => {
     load();

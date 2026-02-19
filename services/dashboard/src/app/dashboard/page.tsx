@@ -1,11 +1,13 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { fetchSummary } from '@/lib/api';
 import { SummaryData, DailyBreakdown } from '@/lib/types';
 
 export default function OverviewPage() {
+  const router = useRouter();
   const [summary, setSummary] = useState<SummaryData | null>(null);
   const [breakdown, setBreakdown] = useState<DailyBreakdown[]>([]);
   const [from, setFrom] = useState('');
@@ -28,12 +30,17 @@ export default function OverviewPage() {
       } else {
         setError('Failed to load summary');
       }
-    } catch {
+    } catch (err) {
+      if (err instanceof Error && err.message === 'SESSION_EXPIRED') {
+        setError('Session expired. Please log in again.');
+        router.replace('/login');
+        return;
+      }
       setError('Could not reach reporting service');
     } finally {
       setLoading(false);
     }
-  }, [from, to]);
+  }, [from, to, router]);
 
   useEffect(() => {
     load();

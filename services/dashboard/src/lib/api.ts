@@ -88,6 +88,12 @@ export async function fetchSummary(params?: {
   const res = await fetch(`${REPORTING_URL}/api/reports/summary?${qs.toString()}`, {
     headers: await authHeaders(),
   });
+
+  if (res.status === 401) {
+    clearToken();
+    throw new Error('SESSION_EXPIRED');
+  }
+
   return res.json();
 }
 
@@ -106,6 +112,12 @@ export async function fetchProducts(params?: {
   const res = await fetch(`${REPORTING_URL}/api/reports/products?${qs.toString()}`, {
     headers: await authHeaders(),
   });
+
+  if (res.status === 401) {
+    clearToken();
+    throw new Error('SESSION_EXPIRED');
+  }
+
   return res.json();
 }
 
