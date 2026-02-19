@@ -1,5 +1,12 @@
 # Data Pipeline Microservices
 
+## Live Demo
+
+- Dashboard URL: https://dashboard-production-b57e.up.railway.app/login
+- Login credentials:
+  - Username: `admin` | Password: `password`
+  - Username: `viewer` | Password: `password`
+
 > **Candidate:** Aaron Hayden  
 > **Stack:** TypeScript · Express · Prisma · PostgreSQL · Docker
 
@@ -154,11 +161,13 @@ This monorepo deploys to Railway as **multiple services**. Railway will not auto
      - `NEXT_PUBLIC_REPORTING_URL` = Reporting public URL
 
 Important notes:
+
 - Railway injects `PORT`; backend services now support this automatically.
 - `NEXT_PUBLIC_*` values are build-time for Next.js, so redeploy dashboard after changing those URLs.
 - Ingestion and transformation run Prisma migrations on startup via entrypoint scripts.
 
 After deploy:
+
 - Enable a public domain for at least `dashboard` (and `reporting`; plus `ingestion` if dashboard calls it from browser).
 - Railway then gives you live links automatically per service domain you enable.
 
