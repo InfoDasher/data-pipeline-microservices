@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Read-only references
+model DailyAggregate {
+  id            String   @id @default(uuid())
+  batchId       String   @map("batch_id")
+  productName   String   @map("product_name")
+  saleDate      DateTime @map("sale_date") @db.Date
+  totalQuantity Int      @map("total_quantity")
+  totalRevenue  Decimal  @map("total_revenue") @db.Decimal(14, 2)
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@unique([batchId, productName, saleDate])
+  @@index([saleDate])
+  @@index([productName])
+  @@map("daily_aggregates")
+}
+
+model TransformationResult {
+  id           String   @id @default(uuid())
+  batchId      String   @map("batch_id")
+  recordId     String   @map("record_id")
+  productName  String   @map("product_name")
+  quantity     Int
+  unitPrice    Decimal  @map("unit_price") @db.Decimal(12, 2)
+  totalRevenue Decimal  @map("total_revenue") @db.Decimal(14, 2)
+  saleDate     DateTime @map("sale_date") @db.Date
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@index([batchId])
+  @@map("transformation_results")
+}

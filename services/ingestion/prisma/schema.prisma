@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Batch {
+  id           String   @id @default(uuid())
+  status       String   @default("pending")
+  recordCount  Int      @default(0) @map("record_count")
+  errorMessage String?  @map("error_message")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  rawRecords        RawRecord[]
+  normalisedRecords NormalisedRecord[]
+
+  @@map("batches")
+}
+
+model RawRecord {
+  id        String   @id @default(uuid())
+  batchId   String   @map("batch_id")
+  payload   Json
+  createdAt DateTime @default(now()) @map("created_at")
+
+  batch Batch @relation(fields: [batchId], references: [id])
+
+  @@index([batchId])
+  @@map("raw_records")
+}
+
+model NormalisedRecord {
+  id          String   @id @default(uuid())
+  batchId     String   @map("batch_id")
+  productName String   @map("product_name")
+  quantity    Int
+  unitPrice   Decimal  @map("unit_price") @db.Decimal(12, 2)
+  saleDate    DateTime @map("sale_date") @db.Date
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  batch Batch @relation(fields: [batchId], references: [id])
+
+  @@index([batchId])
+  @@index([saleDate])
+  @@map("normalised_records")
+}

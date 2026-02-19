@@ -1,0 +1,69 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: pipeline
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U dev -d pipeline']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  ingestion:
+    build:
+      context: .
+      dockerfile: services/ingestion/Dockerfile
+    ports:
+      - '3001:3001'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://dev:dev@postgres:5432/pipeline
+      INGESTION_PORT: 3001
+      TRANSFORMATION_URL: http://transformation:3002
+    restart: unless-stopped
+
+  transformation:
+    build:
+      context: .
+      dockerfile: services/transformation/Dockerfile
+    ports:
+      - '3002:3002'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ingestion:
+        condition: service_started
+    environment:
+      DATABASE_URL: postgresql://dev:dev@postgres:5432/pipeline
+      TRANSFORMATION_PORT: 3002
+    restart: unless-stopped
+
+  reporting:
+    build:
+      context: .
+      dockerfile: services/reporting/Dockerfile
+    ports:
+      - '3003:3003'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      transformation:
+        condition: service_started
+    environment:
+      DATABASE_URL: postgresql://dev:dev@postgres:5432/pipeline
+      REPORTING_PORT: 3003
+      INGESTION_URL: http://ingestion:3001
+      TRANSFORMATION_URL: http://transformation:3002
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
+    restart: unless-stopped
+
+volumes:
+  pgdata:
