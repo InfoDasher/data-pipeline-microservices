@@ -29,7 +29,7 @@ ENV NODE_ENV=production
 
 COPY --from=base /app/services/dashboard/.next/standalone ./
 COPY --from=base /app/services/dashboard/.next/static ./services/dashboard/.next/static
-COPY --from=base /app/services/dashboard/public ./services/dashboard/public 2>/dev/null || true
+COPY --from=base /app/services/dashboard/public ./services/dashboard/public
 
 EXPOSE 3000
 

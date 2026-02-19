@@ -22,6 +22,13 @@ export default [
     },
   },
   {
-    ignores: ['**/dist/**', '**/node_modules/**', '**/*.js', '**/*.mjs', '**/dashboard/**', '**/.next/**'],
+    ignores: [
+      '**/dist/**',
+      '**/node_modules/**',
+      '**/*.js',
+      '**/*.mjs',
+      '**/dashboard/**',
+      '**/.next/**',
+    ],
   },
 ];

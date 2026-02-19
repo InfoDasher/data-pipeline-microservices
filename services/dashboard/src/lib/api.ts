@@ -6,10 +6,8 @@ import {
   AuthResponse,
 } from './types';
 
-const INGESTION_URL =
-  process.env.NEXT_PUBLIC_INGESTION_URL || 'http://localhost:3001';
-const REPORTING_URL =
-  process.env.NEXT_PUBLIC_REPORTING_URL || 'http://localhost:3003';
+const INGESTION_URL = process.env.NEXT_PUBLIC_INGESTION_URL || 'http://localhost:3001';
+const REPORTING_URL = process.env.NEXT_PUBLIC_REPORTING_URL || 'http://localhost:3003';
 
 let token: string | null = null;
 
@@ -42,10 +40,7 @@ async function authHeaders(): Promise<Record<string, string>> {
 
 // ── Auth ────────────────────────────────────────────────
 
-export async function login(
-  username: string,
-  password: string,
-): Promise<AuthResponse> {
+export async function login(username: string, password: string): Promise<AuthResponse> {
   const res = await fetch(`${REPORTING_URL}/api/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -90,10 +85,9 @@ export async function fetchSummary(params?: {
   if (params?.page) qs.set('page', String(params.page));
   if (params?.limit) qs.set('limit', String(params.limit));
 
-  const res = await fetch(
-    `${REPORTING_URL}/api/reports/summary?${qs.toString()}`,
-    { headers: await authHeaders() },
-  );
+  const res = await fetch(`${REPORTING_URL}/api/reports/summary?${qs.toString()}`, {
+    headers: await authHeaders(),
+  });
   return res.json();
 }
 
@@ -109,10 +103,9 @@ export async function fetchProducts(params?: {
   if (params?.page) qs.set('page', String(params.page));
   if (params?.limit) qs.set('limit', String(params.limit));
 
-  const res = await fetch(
-    `${REPORTING_URL}/api/reports/products?${qs.toString()}`,
-    { headers: await authHeaders() },
-  );
+  const res = await fetch(`${REPORTING_URL}/api/reports/products?${qs.toString()}`, {
+    headers: await authHeaders(),
+  });
   return res.json();
 }
 

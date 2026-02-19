@@ -11,11 +11,7 @@ const NAV_ITEMS = [
   { href: '/dashboard/health', label: 'Health', icon: '🏥' },
 ];
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);

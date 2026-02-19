@@ -73,9 +73,8 @@ export default function IngestPage() {
             marginBottom: 16,
           }}
         >
-          Paste a JSON array of sales records. Each record needs{' '}
-          <code>product_name</code>, <code>quantity</code>,{' '}
-          <code>unit_price</code>, and <code>sale_date</code>.
+          Paste a JSON array of sales records. Each record needs <code>product_name</code>,{' '}
+          <code>quantity</code>, <code>unit_price</code>, and <code>sale_date</code>.
         </p>
 
         <form onSubmit={handleSubmit}>
@@ -89,11 +88,7 @@ export default function IngestPage() {
               spellCheck={false}
             />
           </div>
-          <button
-            type="submit"
-            className="btn btn-primary"
-            disabled={loading || !payload.trim()}
-          >
+          <button type="submit" className="btn btn-primary" disabled={loading || !payload.trim()}>
             {loading ? 'Ingesting...' : 'Ingest Records'}
           </button>
         </form>
@@ -103,9 +98,8 @@ export default function IngestPage() {
 
       {result && (
         <div className="alert alert-success">
-          <strong>Success!</strong> Batch{' '}
-          <code>{result.batchId}</code> — {result.recordCount} records
-          ingested ({result.status}).
+          <strong>Success!</strong> Batch <code>{result.batchId}</code> — {result.recordCount}{' '}
+          records ingested ({result.status}).
           {result.errors.length > 0 && (
             <div style={{ marginTop: 8, fontSize: 13 }}>
               <strong>Warnings:</strong>

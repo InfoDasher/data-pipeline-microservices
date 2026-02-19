@@ -43,10 +43,7 @@ export default function HealthPage() {
       <div className="stats-grid" style={{ marginBottom: 16 }}>
         <div className="stat-card">
           <div className="stat-label">Overall Status</div>
-          <div
-            className="stat-value"
-            style={{ color: allUp ? 'var(--green)' : 'var(--red)' }}
-          >
+          <div className="stat-value" style={{ color: allUp ? 'var(--green)' : 'var(--red)' }}>
             {loading ? '...' : allUp ? 'All Systems Operational' : 'Degraded'}
           </div>
         </div>
@@ -55,11 +52,7 @@ export default function HealthPage() {
           <div className="stat-value" style={{ fontSize: 20 }}>
             {lastRefresh || '—'}
           </div>
-          <button
-            className="btn btn-primary btn-sm"
-            onClick={load}
-            style={{ marginTop: 8 }}
-          >
+          <button className="btn btn-primary btn-sm" onClick={load} style={{ marginTop: 8 }}>
             Refresh Now
           </button>
         </div>
@@ -86,15 +79,9 @@ export default function HealthPage() {
               <tbody>
                 {services.map((s) => (
                   <tr key={s.service}>
-                    <td style={{ textTransform: 'capitalize', fontWeight: 600 }}>
-                      {s.service}
-                    </td>
+                    <td style={{ textTransform: 'capitalize', fontWeight: 600 }}>{s.service}</td>
                     <td>
-                      <span
-                        className={`badge ${
-                          s.status === 'up' ? 'badge-up' : 'badge-down'
-                        }`}
-                      >
+                      <span className={`badge ${s.status === 'up' ? 'badge-up' : 'badge-down'}`}>
                         {s.status === 'up' ? '● Up' : '● Down'}
                       </span>
                     </td>

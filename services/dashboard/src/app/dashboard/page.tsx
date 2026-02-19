@@ -1,15 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  CartesianGrid,
-} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { fetchSummary } from '@/lib/api';
 import { SummaryData, DailyBreakdown } from '@/lib/types';
 
@@ -69,12 +61,7 @@ export default function OverviewPage() {
         </div>
         <div className="form-group">
           <label>To</label>
-          <input
-            type="date"
-            className="input"
-            value={to}
-            onChange={(e) => setTo(e.target.value)}
-          />
+          <input type="date" className="input" value={to} onChange={(e) => setTo(e.target.value)} />
         </div>
         <button className="btn btn-primary btn-sm" onClick={load}>
           Apply
@@ -96,15 +83,11 @@ export default function OverviewPage() {
             </div>
             <div className="stat-card">
               <div className="stat-label">Total Quantity Sold</div>
-              <div className="stat-value">
-                {(summary?.totalQuantity ?? 0).toLocaleString()}
-              </div>
+              <div className="stat-value">{(summary?.totalQuantity ?? 0).toLocaleString()}</div>
             </div>
             <div className="stat-card">
               <div className="stat-label">Aggregate Records</div>
-              <div className="stat-value">
-                {(summary?.recordCount ?? 0).toLocaleString()}
-              </div>
+              <div className="stat-value">{(summary?.recordCount ?? 0).toLocaleString()}</div>
             </div>
           </div>
 
@@ -115,11 +98,7 @@ export default function OverviewPage() {
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={breakdown}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#262626" />
-                    <XAxis
-                      dataKey="saleDate"
-                      stroke="#888"
-                      fontSize={12}
-                    />
+                    <XAxis dataKey="saleDate" stroke="#888" fontSize={12} />
                     <YAxis stroke="#888" fontSize={12} />
                     <Tooltip
                       contentStyle={{
@@ -130,11 +109,7 @@ export default function OverviewPage() {
                       }}
                       formatter={(value: number) => [fmt(value), 'Revenue']}
                     />
-                    <Bar
-                      dataKey="totalRevenue"
-                      fill="#3b82f6"
-                      radius={[4, 4, 0, 0]}
-                    />
+                    <Bar dataKey="totalRevenue" fill="#3b82f6" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>

@@ -1,15 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  CartesianGrid,
-} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { fetchProducts } from '@/lib/api';
 import { Product } from '@/lib/types';
 
@@ -67,12 +59,7 @@ export default function ProductsPage() {
         </div>
         <div className="form-group">
           <label>To</label>
-          <input
-            type="date"
-            className="input"
-            value={to}
-            onChange={(e) => setTo(e.target.value)}
-          />
+          <input type="date" className="input" value={to} onChange={(e) => setTo(e.target.value)} />
         </div>
         <button className="btn btn-primary btn-sm" onClick={load}>
           Apply
@@ -111,11 +98,7 @@ export default function ProductsPage() {
                       }}
                       formatter={(value: number) => [fmt(value), 'Revenue']}
                     />
-                    <Bar
-                      dataKey="totalRevenue"
-                      fill="#22c55e"
-                      radius={[0, 4, 4, 0]}
-                    />
+                    <Bar dataKey="totalRevenue" fill="#22c55e" radius={[0, 4, 4, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>

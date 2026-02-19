@@ -345,14 +345,14 @@ curl -s http://localhost:3003/api/reports/health
 
 ## Bonus Features
 
-| Feature                | Details                                                                        |
-| ---------------------- | ------------------------------------------------------------------------------ |
+| Feature                | Details                                                                                   |
+| ---------------------- | ----------------------------------------------------------------------------------------- |
 | **Next.js Dashboard**  | Full-featured React UI: summary charts, product breakdown, data ingestion, health monitor |
-| **JWT Authentication** | Bearer tokens on Reporting endpoints; `/api/auth/login` for token issuance     |
-| **CI Pipeline**        | GitHub Actions: install → build → lint → test on every push/PR                 |
-| **Graceful Shutdown**  | All services handle `SIGTERM`/`SIGINT` for clean Docker container stops        |
-| **Health Dashboard**   | `/api/reports/health` pings all upstream services + DB with 3s timeout         |
-| **Response Caching**   | node-cache with 60s TTL on Reporting queries; deterministic cache key building |
+| **JWT Authentication** | Bearer tokens on Reporting endpoints; `/api/auth/login` for token issuance                |
+| **CI Pipeline**        | GitHub Actions: install → build → lint → test on every push/PR                            |
+| **Graceful Shutdown**  | All services handle `SIGTERM`/`SIGINT` for clean Docker container stops                   |
+| **Health Dashboard**   | `/api/reports/health` pings all upstream services + DB with 3s timeout                    |
+| **Response Caching**   | node-cache with 60s TTL on Reporting queries; deterministic cache key building            |
 
 ---
 
