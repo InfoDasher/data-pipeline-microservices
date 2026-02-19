@@ -1,6 +1,8 @@
 FROM node:20-alpine AS base
 WORKDIR /app
 
+RUN apk add --no-cache openssl
+
 # Copy root workspace files
 COPY package.json package-lock.json* ./
 COPY packages/shared/package.json ./packages/shared/
