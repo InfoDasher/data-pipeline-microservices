@@ -125,6 +125,43 @@ npm run test --workspace=@mono/transformation
 npm run test --workspace=@mono/reporting
 ```
 
+### Deploy on Railway (Live URL)
+
+This monorepo deploys to Railway as **multiple services**. Railway will not auto-wire all service URLs by itself; you need to create each service and set environment variables.
+
+1. Create a new Railway project from this GitHub repo.
+2. Add a Railway PostgreSQL service.
+3. Create 4 app services from the same repo with these roots:
+   - `services/ingestion`
+   - `services/transformation`
+   - `services/reporting`
+   - `services/dashboard`
+4. For each app service, set **Dockerfile Path** to `Dockerfile` (inside its root).
+5. Configure variables:
+   - **ingestion**
+     - `DATABASE_URL` = `${{Postgres.DATABASE_URL}}`
+     - `TRANSFORMATION_URL` = Transformation private URL (or internal domain)
+   - **transformation**
+     - `DATABASE_URL` = `${{Postgres.DATABASE_URL}}`
+   - **reporting**
+     - `DATABASE_URL` = `${{Postgres.DATABASE_URL}}`
+     - `INGESTION_URL` = Ingestion private URL
+     - `TRANSFORMATION_URL` = Transformation private URL
+     - `JWT_SECRET` = strong random value
+   - **dashboard**
+     - `NEXT_PUBLIC_INGESTION_URL` = Ingestion public URL
+     - `NEXT_PUBLIC_TRANSFORMATION_URL` = Transformation public URL (optional if not directly used)
+     - `NEXT_PUBLIC_REPORTING_URL` = Reporting public URL
+
+Important notes:
+- Railway injects `PORT`; backend services now support this automatically.
+- `NEXT_PUBLIC_*` values are build-time for Next.js, so redeploy dashboard after changing those URLs.
+- Ingestion and transformation run Prisma migrations on startup via entrypoint scripts.
+
+After deploy:
+- Enable a public domain for at least `dashboard` (and `reporting`; plus `ingestion` if dashboard calls it from browser).
+- Railway then gives you live links automatically per service domain you enable.
+
 ---
 
 ## API Reference

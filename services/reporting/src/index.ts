@@ -1,7 +1,7 @@
 import { app } from './app';
 import { prisma } from './services/reportService';
 
-const PORT = process.env.REPORTING_PORT || 3003;
+const PORT = Number(process.env.PORT || process.env.REPORTING_PORT || 3003);
 
 const server = app.listen(PORT, () => {
   console.log(`Reporting service running on port ${PORT}`);

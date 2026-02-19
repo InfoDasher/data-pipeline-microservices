@@ -1,7 +1,7 @@
 import { app } from './app';
 import { prisma } from './services/transformService';
 
-const PORT = process.env.TRANSFORMATION_PORT || 3002;
+const PORT = Number(process.env.PORT || process.env.TRANSFORMATION_PORT || 3002);
 
 const server = app.listen(PORT, () => {
   console.log(`Transformation service running on port ${PORT}`);

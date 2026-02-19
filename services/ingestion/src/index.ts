@@ -1,7 +1,7 @@
 import { app } from './app';
 import { prisma } from './services/ingestService';
 
-const PORT = process.env.INGESTION_PORT || 3001;
+const PORT = Number(process.env.PORT || process.env.INGESTION_PORT || 3001);
 
 const server = app.listen(PORT, () => {
   console.log(`Ingestion service running on port ${PORT}`);
