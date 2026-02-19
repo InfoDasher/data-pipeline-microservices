@@ -97,6 +97,7 @@ export default function ProductsPage() {
                       width={120}
                     />
                     <Tooltip
+                      cursor={false}
                       contentStyle={{
                         background: '#141414',
                         border: '1px solid #262626',

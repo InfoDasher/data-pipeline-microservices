@@ -108,6 +108,7 @@ export default function OverviewPage() {
                     <XAxis dataKey="saleDate" stroke="#888" fontSize={12} />
                     <YAxis stroke="#888" fontSize={12} />
                     <Tooltip
+                      cursor={false}
                       contentStyle={{
                         background: '#141414',
                         border: '1px solid #262626',
